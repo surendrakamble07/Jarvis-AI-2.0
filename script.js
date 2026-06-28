@@ -288,70 +288,94 @@ function initStatsCounter() {
    GALLERY — auto-load screenshots
 ══════════════════════════════════════ */
 function initGallery() {
-  const grid    = document.getElementById('gallery-grid');
-  const lb      = document.getElementById('lightbox');
-  const lbImg   = document.getElementById('lb-img');
-  const lbClose = document.getElementById('lb-close');
-  if (!grid) return;
 
-  /*
-   * GitHub Pages cannot directory-list /assets/screenshots/, so we use
-   * a predefined list. Edit SCREENSHOTS below to add your images:
-   * just drop files into assets/screenshots/ AND add the filenames here.
-   *
-   * If you want fully automatic detection, you'll need a build step or
-   * a screenshots.json manifest — both require no backend, just a
-   * one-time file list update.
-   */
-  const SCREENSHOTS = [
-    // Add your screenshot filenames here, e.g.:
-    // 'assets/screenshots/home.png',
-    // 'assets/screenshots/voice.png',
-    // 'assets/screenshots/chat.png',
-  ];
+    const gallery = document.getElementById("gallery-grid");
 
-  if (SCREENSHOTS.length === 0) {
-    // Keep placeholder
-    return;
-  }
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lb-img");
+    const closeBtn = document.getElementById("lb-close");
 
-  // Remove placeholder
-  grid.innerHTML = '';
+    const screenshots = [
 
-  SCREENSHOTS.forEach((src, i) => {
-    const item = document.createElement('div');
-    item.className = 'gallery-item';
-    item.setAttribute('data-aos', 'zoom-in');
-    item.setAttribute('data-aos-delay', String(i * 60));
+        {
+            src: "assets/screenshots/voice-mode.png",
+            title: "Voice Assistant",
+            description: "Interact with JARVIS using natural voice commands."
+        },
 
-    const img = document.createElement('img');
-    img.src     = src;
-    img.alt     = `Screenshot ${i + 1}`;
-    img.loading = 'lazy';
+        {
+            src: "assets/screenshots/chat-mode.png",
+            title: "AI Chat",
+            description: "Chat with JARVIS and generate code instantly."
+        },
 
-    const overlay = document.createElement('div');
-    overlay.className = 'gallery-item-overlay';
-    overlay.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>';
+        {
+            src: "assets/screenshots/ironman.png",
+            title: "Image Generation",
+            description: "Generate cinematic AI images."
+        },
 
-    item.appendChild(img);
-    item.appendChild(overlay);
-    grid.appendChild(item);
+        {
+            src: "assets/screenshots/antman.png",
+            title: "Creative Images",
+            description: "High-quality superhero artwork."
+        },
 
-    item.addEventListener('click', () => {
-      lbImg.src = src;
-      lb.classList.add('open');
-      document.body.style.overflow = 'hidden';
+        {
+            src: "assets/screenshots/spiderman.png",
+            title: "AI Creativity",
+            description: "Advanced prompt-based image generation."
+        }
+
+    ];
+
+    gallery.innerHTML = "";
+
+    screenshots.forEach((item, index) => {
+
+        gallery.innerHTML += `
+        <div class="gallery-card"
+             data-aos="zoom-in"
+             data-aos-delay="${index * 100}">
+            <img src="${item.src}" alt="${item.title}">
+            <div class="gallery-info">
+                <h3>${item.title}</h3>
+                <p>${item.description}</p>
+            </div>
+        </div>`;
     });
-  });
 
-  lbClose?.addEventListener('click', closeLB);
-  lb?.addEventListener('click', e => { if (e.target === lb) closeLB(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+    document.querySelectorAll(".gallery-card img").forEach(img => {
 
-  function closeLB() {
-    lb.classList.remove('open');
-    document.body.style.overflow = '';
-  }
+        img.addEventListener("click", () => {
+
+            lightbox.classList.add("open");
+            lightboxImg.src = img.src;
+
+            document.body.style.overflow = "hidden";
+
+        });
+
+    });
+
+    closeBtn.onclick = () => {
+
+        lightbox.classList.remove("open");
+        document.body.style.overflow = "";
+
+    };
+
+    lightbox.onclick = e => {
+
+        if (e.target === lightbox) {
+
+            lightbox.classList.remove("open");
+            document.body.style.overflow = "";
+
+        }
+
+    };
+
 }
 
 /* ══════════════════════════════════════
